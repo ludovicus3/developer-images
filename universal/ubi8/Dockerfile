@@ -17,6 +17,8 @@ LABEL description="Image with developers tools. Languages SDK and runtimes inclu
 LABEL io.k8s.display-name="devfile-developer-universal"
 LABEL io.openshift.expose-services=""
 
+RUN dnf install -y patch bison bzip2 libffi-devel patch readline-devel ruby sqlite-devel
+
 USER 10001
 
 # Java
@@ -62,15 +64,17 @@ ENV PATH="/home/user/.local/share/coursier/bin:$PATH"
 
 # NodeJS
 ENV NVM_DIR="/home/user/.nvm"
-ENV NODEJS_VERSION=16.14.0
-ENV NODEJS_12_VERSION=12.22.10
-ENV NODEJS_14_VERSION=14.19.0
+ENV NODEJS_VERSION=18.16.0
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-RUN source /home/user/.bashrc && nvm install v${NODEJS_VERSION} && nvm install v${NODEJS_14_VERSION} && nvm install v${NODEJS_12_VERSION} && nvm alias default v$NODEJS_VERSION && nvm use v$NODEJS_VERSION && npm install --global yarn@v1.22.17
+RUN source /home/user/.bashrc && nvm install v${NODEJS_VERSION} && nvm alias default v$NODEJS_VERSION && nvm use v$NODEJS_VERSION && npm install --global yarn@v1.22.17
 ENV PATH=$NVM_DIR/versions/node/v$NODEJS_VERSION/bin:$PATH
-ENV NODEJS_HOME_12=$NVM_DIR/versions/node/v$NODEJS_12_VERSION
-ENV NODEJS_HOME_14=$NVM_DIR/versions/node/v$NODEJS_14_VERSION
-ENV NODEJS_HOME_16=$NVM_DIR/versions/node/v$NODEJS_VERSION
+
+# Ruby
+ENV RVM_DIR="/home/user/.rvm"
+ENV RUBY_VERSION=3.0.0
+RUN gpg2 --keyserver hkp://keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+RUN curl -sSL https://get.rvm.io | bash -s stable
+RUN source /home/user/.bashrc && rvm install ruby-${RUBY_VERSION}
 
 # kube
 ENV KUBECONFIG=/home/user/.kube/config
