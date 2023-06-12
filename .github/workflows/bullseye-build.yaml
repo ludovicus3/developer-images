@@ -14,7 +14,7 @@ on:
     outputs:
       uniq_tag:
         description: "The first output string"
-        value: ${{ jobs.build_universal_bullseye_image.outputs.output1 }}
+        value: ${{ jobs.build_rails_bullseye_image.outputs.output1 }}
 
 
 jobs:
@@ -86,7 +86,7 @@ jobs:
           registry: quay.io
           username: ${{ secrets.QUAY_USERNAME }}
           password: ${{ secrets.QUAY_PASSWORD }}
-      - name: Docker Build & Push Universal
+      - name: Docker Build & Push rails
         uses: docker/build-push-action@v4
         with:
           push: ${{ github.event_name != 'pull_request' }}
