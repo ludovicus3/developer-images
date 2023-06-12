@@ -20,6 +20,10 @@ RUN apt install -y bash curl diffutils git git-lfs iproute2 jq less lsof man nan
                    libdigest-sha-perl net-tools openssh-client rsync socat sudo time vim wget zip
 RUN apt clean
 
+# make /bin/sh symlink to bash instead of dash
+RUN echo "dash dash/sh boolean false" | debconf-set-selections
+RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+
 # ## gh-cli
 # RUN \
 #     TEMP_DIR="$(mktemp -d)"; \
