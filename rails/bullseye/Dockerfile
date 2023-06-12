@@ -20,7 +20,9 @@ LABEL io.openshift.expose-services=""
 USER 0
 
 RUN apt update && \
-    apt install -y patch bison bzip2 libffi-dev libreadline-dev ruby libsqlite3-dev gpg
+    apt install -y patch bison bzip2 libffi-dev libreadline-dev ruby libsqlite3-dev gpg g++ gcc \
+        autoconf automake libc6-dev libgdbm-dev libtool libyaml-dev make sqlite3 zlib1g-dev \
+        libssl-dev libncurses5-dev
 
 USER 10001
 
