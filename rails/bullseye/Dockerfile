@@ -41,7 +41,7 @@ RUN source ${RVM_DIR}/scripts/rvm; ${RVM_DIR}/bin/rvm install ruby-${RUBY_VERSIO
 # Set permissions on /etc/passwd and /home to allow arbitrary users to write
 RUN mkdir -p /home/user && chgrp -R 0 /home && chmod -R g=u /etc/passwd /etc/group /home
 
-# cleanup dnf cache
-RUN dnf -y clean all --enablerepo='*'
+# cleanup apt cache
+RUN apt clean
 
 USER 10001
