@@ -16,8 +16,8 @@ USER 0
 
 RUN apt update
 #RUN apt upgrade -y
-RUN apt install -y bash curl diffutils git git-lfs iproute jq less lsof man nano procps p7zip p7zip-plugins \
-                   perl-Digest-SHA net-tools openssh-clients rsync socat sudo time vim wget zip && \
+RUN apt install -y bash curl diffutils git git-lfs iproute2 jq less lsof man nano procps p7zip-full \
+                   libdigest-sha-perl net-tools openssh-client rsync socat sudo time vim wget zip && \
 RUN apt clean
 
 # ## gh-cli
