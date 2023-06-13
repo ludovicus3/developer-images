@@ -17,10 +17,6 @@ LABEL description="Image with developers tools. Languages SDK and runtimes inclu
 LABEL io.k8s.display-name="devfile-developer-universal"
 LABEL io.openshift.expose-services=""
 
-USER 0
-
-RUN dnf install -y patch bison bzip2 libffi-devel patch readline-devel ruby sqlite-devel
-
 USER 10001
 
 # NodeJS
@@ -36,6 +32,8 @@ ENV RUBY_VERSION=3.0.0
 RUN gpg2 --keyserver hkp://keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
 RUN curl -sSL https://get.rvm.io | bash -s stable
 RUN source /home/user/.bashrc && rvm install ruby-${RUBY_VERSION}
+
+USER 0
 
 # Set permissions on /etc/passwd and /home to allow arbitrary users to write
 RUN mkdir -p /home/user && chgrp -R 0 /home && chmod -R g=u /etc/passwd /etc/group /home
