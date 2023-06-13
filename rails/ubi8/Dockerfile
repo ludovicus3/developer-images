@@ -33,7 +33,7 @@ RUN gpg2 --keyserver hkp://keyserver.ubuntu.com --recv-keys 409B6B1796C275462A17
 RUN curl -sSL https://get.rvm.io | bash -s stable
 
 USER 0
-RUN ${RVM_DIR}/bin/rvm requirements
+RUN ${RVM_DIR}/bin/rvm requirements --debug
 
 USER 10001
 RUN source /home/user/.bashrc && rvm install ruby-${RUBY_VERSION}
