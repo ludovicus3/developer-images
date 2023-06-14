@@ -9,6 +9,8 @@ LABEL summary="devfile base developer image"
 LABEL description="Image with base developers tools. Languages SDK and runtimes excluded."
 LABEL io.k8s.display-name="devfile-developer-base"
 
+SHELL ["/bin/bash", "-c"]
+
 USER 0
 
 RUN apt update
@@ -16,10 +18,6 @@ RUN apt upgrade -y
 RUN apt install -y bash curl diffutils git git-lfs iproute2 jq less lsof man nano procps p7zip-full \
                    libdigest-sha-perl net-tools openssh-client rsync socat sudo time vim wget zip gpg
 RUN apt clean
-
-# make /bin/sh symlink to bash instead of dash
-RUN echo "dash dash/sh boolean false" | debconf-set-selections
-RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
 
 COPY --chown=0:0 entrypoint.sh /
 RUN \
