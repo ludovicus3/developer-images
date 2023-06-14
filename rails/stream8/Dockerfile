@@ -34,7 +34,9 @@ RUN curl -sSL https://get.rvm.io | bash -s stable
 
 USER 0
 
-RUN ${RVM_DIR}/bin/rvm requirements
+RUN dnf install -y patch autoconf automake bison bzip2 gcc-c++ libffi-devel libtool \
+                  make patch readline-devel ruby sqlite-devel zlib-devel glibc-headers \
+                  glibc-devel openssl-devel
 
 USER 10001
 
