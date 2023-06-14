@@ -17,6 +17,10 @@ LABEL description="Image with developers tools. Languages SDK and runtimes inclu
 LABEL io.k8s.display-name="devfile-developer-rails"
 LABEL io.openshift.expose-services=""
 
+# make /bin/sh symlink to bash instead of dash
+RUN echo "dash dash/sh boolean false" | debconf-set-selections
+RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+
 USER 10001
 
 # NodeJS
