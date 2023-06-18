@@ -34,9 +34,7 @@ ARG POSTGRESQL_VERSION="13"
 
 RUN dnf module enable ruby:${RUBY_VERSION} postgresql:${POSTGRESQL_VERSION} -y && \
     dnf install -y postgresql-libs ruby{,gems} rubygem-{rake,bundler} \
-      npm nc hostname redhat-rpm-config git git-lfs postgresql \
-      sudo gcc-c++ make bzip2 gettext tar vim \
-      libxml2-devel libcurl-devel ruby-devel postgresql-devel
+      postgresql gcc-c++ make gettext libxml2-devel libcurl-devel ruby-devel postgresql-devel
 
 # Set permissions on /etc/passwd and /home to allow arbitrary users to write
 RUN mkdir -p /home/user && chgrp -R 0 /home && chmod -R g=u /etc/passwd /etc/group /home
