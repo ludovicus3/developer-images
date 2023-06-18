@@ -32,9 +32,9 @@ USER 0
 ARG RUBY_VERSION="3.0"
 ARG POSTGRESQL_VERSION="13"
 
-RUN dnf module enable ruby:${RUBY_VERSION} postgresql:${POSTGRESQL_VERSION} -y && \
-    dnf install -y postgresql-libs ruby{,gems} rubygem-{rake,bundler} \
-      postgresql gcc-c++ make gettext libxml2-devel libcurl-devel ruby-devel postgresql-devel
+RUN dnf module enable ruby:${RUBY_VERSION} -y && \
+    dnf install -y ruby{,gems} rubygem-{rake,bundler} \
+      gcc-c++ make gettext libxml2-devel libcurl-devel ruby-devel libpq-devel
 
 # Set permissions on /etc/passwd and /home to allow arbitrary users to write
 RUN mkdir -p /home/user && chgrp -R 0 /home && chmod -R g=u /etc/passwd /etc/group /home
