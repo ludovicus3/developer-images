@@ -19,17 +19,20 @@ RUN source /home/user/.bashrc && nvm install v${NODEJS_VERSION} && nvm alias def
 ENV PATH=$NVM_DIR/versions/node/v$NODEJS_VERSION/bin:$PATH
 
 # Ruby
-# Ruby
 ENV RVM_DIR="/home/user/.rvm"
 ENV RUBY_VERSION=3.0.0
 RUN gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
 RUN curl -sSL https://get.rvm.io | bash -s stable
 
 USER 0
+
 RUN ${RVM_DIR}/bin/rvm requirements
 
 USER 10001
+
 RUN source ${RVM_DIR}/scripts/rvm; ${RVM_DIR}/bin/rvm install ruby-${RUBY_VERSION}
+
+USER 0
 
 # Set permissions on /etc/passwd and /home to allow arbitrary users to write
 RUN mkdir -p /home/user && chgrp -R 0 /home && chmod -R g=u /etc/passwd /etc/group /home
