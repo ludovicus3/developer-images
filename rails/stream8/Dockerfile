@@ -1,20 +1,12 @@
-# syntax=docker/dockerfile:1.3-labs
+FROM quay.io/ludovicus/base-developer-image:stream8-latest
 
-# updateBaseImages.sh can't operate on SHA-based tags as they're not date-based or semver-sequential, and therefore cannot be ordered
-FROM quay.io/devfile/base-developer-image:ubi8-latest
-LABEL maintainer="Red Hat, Inc."
-
-LABEL com.redhat.component="devfile-universal-container"
 LABEL name="devfile/rails-developer-image"
 LABEL version="ubi8"
 
-#label for EULA
-LABEL com.redhat.license_terms="https://www.redhat.com/en/about/red-hat-end-user-license-agreements#UBI"
-
 #labels for container catalog
-LABEL summary="devfile universal developer image"
+LABEL summary="devfile rails developer image"
 LABEL description="Image with developers tools. Languages SDK and runtimes included."
-LABEL io.k8s.display-name="devfile-developer-universal"
+LABEL io.k8s.display-name="devfile-developer-rails"
 LABEL io.openshift.expose-services=""
 
 USER 10001
@@ -32,9 +24,9 @@ USER 0
 ARG RUBY_VERSION="3.0"
 ARG POSTGRESQL_VERSION="13"
 
-RUN dnf module enable ruby:${RUBY_VERSION} -y && \
+RUN dnf module enable ruby:${RUBY_VERSION} postgresql:${POSTGRESQL_VERSION} -y && \
     dnf install -y ruby{,gems} rubygem-{rake,bundler} \
-      gcc-c++ make gettext libxml2-devel libcurl-devel ruby-devel libpq-devel
+      gcc-c++ make gettext libxml2-devel libcurl-devel ruby-devel postgresql postgresql-libs postgresql-devel
 
 # Set permissions on /etc/passwd and /home to allow arbitrary users to write
 RUN mkdir -p /home/user && chgrp -R 0 /home && chmod -R g=u /etc/passwd /etc/group /home
