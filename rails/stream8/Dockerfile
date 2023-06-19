@@ -9,7 +9,7 @@ LABEL description="Image with developers tools. Languages SDK and runtimes inclu
 LABEL io.k8s.display-name="devfile-developer-rails"
 LABEL io.openshift.expose-services=""
 
-USER 10001
+USER 0
 
 # Python
 RUN dnf -y module enable python39:3.9 && \
@@ -23,6 +23,8 @@ RUN cd /usr/bin \
     && if [ ! -L pip ]; then ln -s pip-3.9 pip; fi
 
 RUN pip install pylint yq
+
+USER 10001
 
 # NodeJS
 ENV NVM_DIR="/home/user/.nvm"
