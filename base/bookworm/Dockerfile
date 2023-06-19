@@ -17,7 +17,7 @@ RUN apt update
 RUN apt upgrade -y
 RUN apt install -y bash curl diffutils git git-lfs iproute2 jq less lsof man nano \
             procps p7zip-full libdigest-sha-perl net-tools openssh-client rsync \
-            socat sudo time vim wget zip gpg yq
+            socat sudo time vim wget zip gpg yq brotli
 RUN apt clean
 
 COPY --chown=0:0 entrypoint.sh /
