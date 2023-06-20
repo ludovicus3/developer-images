@@ -49,6 +49,8 @@ RUN source ${RVM_DIR}/scripts/rvm; ${RVM_DIR}/bin/rvm install ruby-${RUBY_VERSIO
 
 USER 0
 
+RUN dnf install -y postgresql-devel
+
 # Set permissions on /etc/passwd and /home to allow arbitrary users to write
 RUN mkdir -p /home/user && chgrp -R 0 /home && chmod -R g=u /etc/passwd /etc/group /home
 
