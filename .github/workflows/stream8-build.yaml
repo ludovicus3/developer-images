@@ -140,7 +140,7 @@ jobs:
         with:
           push: ${{ github.event_name != 'pull_request' }}
           provenance: false
-          context: pdk/stream8
+          context: puppet/stream8
           tags: |
             quay.io/ludovicus/pdk-developer-image:latest
             ${{ steps.meta.outputs.tags }}
