@@ -1,0 +1,24 @@
+FROM quay.io/ludovicus/base-developer-image:bookworm-latest
+
+LABEL name="devfile/rails-developer-image"
+LABEL version="bookworm"
+
+#labels for container catalog
+LABEL summary="devfile rails developer image"
+LABEL description="Image with developers tools. Languages SDK and runtimes included."
+LABEL io.k8s.display-name="devfile-developer-rails"
+LABEL io.openshift.expose-services=""
+
+USER 10001
+
+USER 0
+
+RUN apt install -y build-essential clang g++ gcc clang-tidy gdb cmake ccache
+
+# Set permissions on /etc/passwd and /home to allow arbitrary users to write
+RUN mkdir -p /home/user && chgrp -R 0 /home && chmod -R g=u /etc/passwd /etc/group /home
+
+# cleanup apt cache
+RUN apt clean
+
+USER 10001
