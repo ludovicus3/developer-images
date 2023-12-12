@@ -105,7 +105,7 @@ jobs:
           echo "uniq_tag=$UNIQ_TAG_IMAGE" >> $GITHUB_OUTPUT
 
   build_cpp_bookworm_image:
-    name: Build and publish rails bookworm image to Quay.io
+    name: Build and publish C++ bookworm image to Quay.io
     runs-on: ubuntu-22.04
     needs: build_base_bookworm_image
    # job output for passing to mapping value (the workflow_call section)
@@ -140,7 +140,7 @@ jobs:
         with:
           push: ${{ github.event_name != 'pull_request' }}
           provenance: false
-          context: rails/bookworm
+          context: cpp/bookworm
           tags: |
             quay.io/ludovicus/cpp-developer-image:latest
             ${{ steps.meta.outputs.tags }}
