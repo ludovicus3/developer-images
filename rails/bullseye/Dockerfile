@@ -8,9 +8,6 @@ LABEL com.redhat.component="devfile-rails-container"
 LABEL name="devfile/rails-developer-image"
 LABEL version="bullseye"
 
-#label for EULA
-LABEL com.redhat.license_terms="https://www.redhat.com/en/about/red-hat-end-user-license-agreements#UBI"
-
 #labels for container catalog
 LABEL summary="devfile rails developer image"
 LABEL description="Image with developers tools. Languages SDK and runtimes included."
