@@ -17,7 +17,7 @@ RUN apt update
 RUN apt upgrade -y
 RUN apt install -y bash curl diffutils git git-lfs iproute2 jq less lsof man nano \
             procps p7zip-full libdigest-sha-perl net-tools openssh-client rsync \
-            socat sudo time vim wget zip gpg yq brotli
+            socat sudo time vim wget zip gpg yq brotli nodejs
 RUN apt clean
 
 COPY --chown=0:0 entrypoint.sh /
@@ -35,6 +35,7 @@ RUN \
     chmod +x /entrypoint.sh
 
 USER 10001
+ENV VSCODE_NODEJS_RUNTIME_DIR=/usr/bin
 ENV HOME=/home/user
 WORKDIR /projects
 ENTRYPOINT [ "/entrypoint.sh" ]
