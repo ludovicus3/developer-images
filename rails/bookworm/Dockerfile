@@ -28,7 +28,7 @@ USER 0
 RUN ${RVM_DIR}/bin/rvm requirements
 
 USER 10001
-RUN source /home/user/.bashrc && rvm install ruby-${RUBY_VERSION}
+RUN source ${RVM_DIR}/scripts/rvm && ${RVM_DIR}/bin/rvm install ruby-${RUBY_VERSION}
 USER 0
 
 # Set permissions on /etc/passwd and /home to allow arbitrary users to write
