@@ -71,7 +71,7 @@ RUN chgrp -R 0 /home && chmod -R g=u /etc/passwd /etc/group /home
 RUN apt clean
 
 COPY --chown=0:0 entrypoint.sh /
-RUN chmod +x entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 USER 10001
 
