@@ -42,8 +42,6 @@ RUN \
     chmod +x /entrypoint.sh && \
     # Create symbolic links from /home/tooling/ -> /home/user/
     stow . -t /home/user/ -d /home/tooling/ && \
-    # .viminfo cannot be a symbolic link for security reasons, so copy it to /home/user/
-    cp /home/tooling/.viminfo /home/user/.viminfo && \
     # Bash-related files are backed up to /home/tooling/ incase they are deleted when persistUserHome is enabled.
     cp /home/user/.bashrc /home/tooling/.bashrc && \
     cp /home/user/.bash_profile /home/tooling/.bash_profile && \
