@@ -14,13 +14,16 @@ ENV HOME=/home/tooling
 
 # NodeJS
 RUN mkdir -p /home/tooling/.nvm/
+
 ENV NVM_DIR="/home/tooling/.nvm"
 ARG NODEJS_VERSION=18.16.0
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-RUN echo 'export NVM_DIR="$HOME/.nvm"' >> /home/user/.bash_profile && \
-    echo '[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"' >> /home/user/.bash_profile && \
-    echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion' >> /home/user/.bash_profile
-RUN source /home/user/.bashrc && \
+ARG NVM_VERSION=0.39.5
+
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh | bash
+RUN echo 'export NVM_DIR="$HOME/.nvm"' >> /home/tooling/.bash_profile && \
+    echo '[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"' >> /home/tooling/.bash_profile && \
+    echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion' >> /home/tooling/.bash_profile
+RUN source ${NVM_DIR}/nvm.sh && \
     nvm install v${NODEJS_VERSION} && \
     nvm alias default v$NODEJS_VERSION && \
     nvm use v$NODEJS_VERSION && \
@@ -41,7 +44,7 @@ RUN ${RVM_DIR}/bin/rvm requirements
 RUN rm -rf ${RVM_DIR}/log/*
 
 USER 10001
-RUN source /home/user/.bashrc && \
+RUN source ${RVM_DIR}/scripts/rvm && \
     rvm pkg install openssl && \
     rvm install ruby-${RUBY_VERSION} --with-openssl-dir=${RVM_DIR}/usr && \
     chgrp -R 0 /home/tooling && chmod -R g=u /home/tooling
@@ -55,7 +58,9 @@ ENV PATH="/home/user/.local/bin:$PATH"
 ENV PATH="/home/tooling/.local/bin:$PATH"
 
 # Create symbolic links from /home/tooling/ -> /home/user/
-RUN stow . -t /home/user/ -d /home/tooling/ --no-folding
+RUN stow . -t /home/user/ -d /home/tooling/ --no-folding && \
+    cp /home/tooling/.bashrc /home/user/.bashrc && \
+    cp /home/tooling/.bash_profile /home/user/.bash_profile
 
 # Set permissions on /etc/passwd and /home to allow arbitrary users to write
 RUN chgrp -R 0 /home && chmod -R g=u /etc/passwd /etc/group /home
