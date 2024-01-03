@@ -5,3 +5,4 @@
 # but we don't want them to be symbolic links (or to cause stow conflicts). They will be copied to /home/user/ manually.
 \.bashrc
 \.bash_profile
+\.profile
