@@ -38,14 +38,16 @@ RUN mkdir -p /home/tooling/.rvm/
 ENV RVM_DIR="/home/tooling/.rvm"
 ARG RUBY_VERSION=3.0.0
 RUN gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-RUN curl -sSL https://get.rvm.io | PROFILE=/dev/null bash -s stable
+RUN curl -sSL https://get.rvm.io | PROFILE=/dev/null bash -s stable --autolibs=openssl
+RUN echo 'export RVM_DIR="$HOME/.rvm"' >> ${PROFILE_EXT} \
+    && echo '[ -s "$RVM_DIR/scripts/rvm" ] && \. "$RVM_DIR/scripts/rvm"' >> ${PROFILE_EXT}
 
 USER 0
 RUN ${RVM_DIR}/bin/rvm requirements
+RUN rm -rf ${RVM_DIR}/log/*
 
 USER 10001
 RUN source ${RVM_DIR}/scripts/rvm && \
-    rvm pkg install openssl && \
     rvm install ruby-${RUBY_VERSION} --with-openssl-dir=${RVM_DIR}/usr && \
     chgrp -R 0 /home/tooling && chmod -R g=u /home/tooling
 USER 0
