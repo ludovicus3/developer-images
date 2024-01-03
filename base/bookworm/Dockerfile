@@ -44,8 +44,7 @@ RUN \
     stow . -t /home/user/ -d /home/tooling/ && \
     # Bash-related files are backed up to /home/tooling/ incase they are deleted when persistUserHome is enabled.
     cp /home/user/.bashrc /home/tooling/.bashrc && \
-    cp /home/user/.bash_profile /home/tooling/.bash_profile && \
-    chown 10001 /home/tooling/.bashrc /home/tooling/.bash_profile
+    chown 10001 /home/tooling/.bashrc
 
 USER 10001
 ENV VSCODE_NODEJS_RUNTIME_DIR=/usr/bin
