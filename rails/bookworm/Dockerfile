@@ -44,7 +44,10 @@ USER 0
 RUN ${RVM_DIR}/bin/rvm requirements
 
 USER 10001
-RUN source ${RVM_DIR}/scripts/rvm && rvm pkg install openssl && rvm install ruby-${RUBY_VERSION} --with-openssl-dir=${RVM_DIR}/usr
+RUN source ${RVM_DIR}/scripts/rvm && \
+    rvm pkg install openssl && \
+    rvm install ruby-${RUBY_VERSION} --with-openssl-dir=${RVM_DIR}/usr && \
+    chgrp -R 0 /home/tooling && chmod -R g=u /home/tooling
 USER 0
 
 # Define user directory for binaries
