@@ -50,7 +50,7 @@ jobs:
         with:
           push: ${{ github.event_name != 'pull_request' }}
           provenance: false
-          context: base/stream8
+          context: base
           tags: |
             quay.io/ludovicus/base-developer-image:latest
             ${{ steps.meta.outputs.tags }}
@@ -91,7 +91,7 @@ jobs:
         with:
           push: ${{ github.event_name != 'pull_request' }}
           provenance: false
-          context: rails/stream8
+          context: rails
           tags: |
             quay.io/ludovicus/rails-developer-image:latest
             ${{ steps.meta.outputs.tags }}
@@ -140,7 +140,7 @@ jobs:
         with:
           push: ${{ github.event_name != 'pull_request' }}
           provenance: false
-          context: puppet/stream8
+          context: puppet
           tags: |
             quay.io/ludovicus/pdk-developer-image:latest
             ${{ steps.meta.outputs.tags }}
