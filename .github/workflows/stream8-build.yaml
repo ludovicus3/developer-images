@@ -50,9 +50,8 @@ jobs:
         with:
           push: ${{ github.event_name != 'pull_request' }}
           provenance: false
-          context: base
+          context: base/
           tags: |
-            quay.io/ludovicus/base-developer-image:latest
             ${{ steps.meta.outputs.tags }}
 
   build_rails_stream8_image:
@@ -91,9 +90,8 @@ jobs:
         with:
           push: ${{ github.event_name != 'pull_request' }}
           provenance: false
-          context: rails
+          context: rails/
           tags: |
-            quay.io/ludovicus/rails-developer-image:latest
             ${{ steps.meta.outputs.tags }}
       - name: Get tag with uniq prefix
         id: setTagName
@@ -140,9 +138,8 @@ jobs:
         with:
           push: ${{ github.event_name != 'pull_request' }}
           provenance: false
-          context: puppet
+          context: puppet/
           tags: |
-            quay.io/ludovicus/pdk-developer-image:latest
             ${{ steps.meta.outputs.tags }}
       - name: Get tag with uniq prefix
         id: setTagName
