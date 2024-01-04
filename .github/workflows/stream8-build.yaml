@@ -90,7 +90,7 @@ jobs:
         with:
           push: ${{ github.event_name != 'pull_request' }}
           provenance: false
-          context: "{{defaultContext}}:rails"
+          context: rails
           tags: |
             ${{ steps.meta.outputs.tags }}
       - name: Get tag with uniq prefix
@@ -138,7 +138,7 @@ jobs:
         with:
           push: ${{ github.event_name != 'pull_request' }}
           provenance: false
-          context: "{{defaultContext}}:puppet"
+          context: puppet
           tags: |
             ${{ steps.meta.outputs.tags }}
       - name: Get tag with uniq prefix
