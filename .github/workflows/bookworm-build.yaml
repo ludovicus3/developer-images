@@ -2,7 +2,7 @@ name: Build of Debian Bookworm based Developer Images
 
 on:
   push:
-    branches: [ main ]
+    branches: [ bookworm ]
 
   workflow_call:
     # Map the workflow outputs to job outputs
