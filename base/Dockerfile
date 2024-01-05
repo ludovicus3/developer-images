@@ -16,18 +16,20 @@ USER 0
 ENV HOME=/home/tooling
 RUN mkdir -p /home/tooling/
 
-RUN apt update
-RUN apt upgrade -y
-RUN apt install -y bash curl diffutils git git-lfs iproute2 jq less lsof man nano \
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install -y bash curl diffutils git git-lfs iproute2 jq less lsof man nano \
             procps p7zip-full libdigest-sha-perl net-tools openssh-client rsync \
             socat sudo time vim wget zip gpg yq brotli nodejs stow
-RUN apt clean
+RUN apt-get clean
 
 COPY --chown=0:0 entrypoint.sh /
 COPY --chown=0:0 .stow-local-ignore /home/tooling/
 RUN \
     # add user and configure it
     useradd -u 10001 -G sudo,root -d /home/user --shell /bin/bash -m user && \
+    # Create sudo rool to allow install of dependencies
+    echo '%sudo ALL = NOPASSWD: /usr/bin/apt, /usr/bin/apt-get' >> /etc/sudoers.d/10-apt && \
     # Setup $PS1 for a consistent and reasonable prompt
     touch /etc/profile.d/prompt.sh && \
     chown 10001 /etc/profile.d/prompt.sh && \
@@ -47,7 +49,10 @@ RUN \
     chown 10001 /home/tooling/.bashrc
 
 USER 10001
+
+# needed for the injected workspace to work
 ENV VSCODE_NODEJS_RUNTIME_DIR=/usr/bin
+
 ENV HOME=/home/user
 WORKDIR /projects
 ENTRYPOINT [ "/entrypoint.sh" ]

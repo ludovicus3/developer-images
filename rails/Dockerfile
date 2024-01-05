@@ -18,11 +18,9 @@ RUN mkdir -p /home/tooling/.nvm/
 ENV NVM_DIR="/home/tooling/.nvm"
 ARG NODEJS_VERSION=18.16.0
 ARG NVM_VERSION=0.39.5
-
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh | bash
 RUN echo 'export NVM_DIR="$HOME/.nvm"' >> /home/tooling/.bash_profile && \
-    echo '[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"' >> /home/tooling/.bash_profile && \
-    echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion' >> /home/tooling/.bash_profile
+    echo '[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"' >> /home/tooling/.bash_profile
 RUN source ${NVM_DIR}/nvm.sh && \
     nvm install v${NODEJS_VERSION} && \
     nvm alias default v$NODEJS_VERSION && \
@@ -57,6 +55,9 @@ RUN mkdir -p /home/tooling/.local/bin && \
 ENV PATH="/home/user/.local/bin:$PATH"
 ENV PATH="/home/tooling/.local/bin:$PATH"
 
+RUN cat ${NVM_DIR}/bash_completion > /usr/share/bash-completion/completions/nvm && \
+    cat ${RVM_DIR}/scripts/completion > /usr/share/bash-completion/completions/rvm
+
 # Create symbolic links from /home/tooling/ -> /home/user/
 RUN stow . -t /home/user/ -d /home/tooling/ --no-folding && \
     cp /home/tooling/.bashrc /home/user/.bashrc && \
@@ -67,9 +68,6 @@ RUN chgrp -R 0 /home && chmod -R g=u /etc/passwd /etc/group /home
 
 # cleanup apt cache
 RUN apt clean
-
-COPY --chown=0:0 entrypoint.sh /
-RUN chmod +x /entrypoint.sh
 
 USER 10001
 
