@@ -28,8 +28,8 @@ COPY --chown=0:0 .stow-local-ignore /home/tooling/
 RUN \
     # add user and configure it
     useradd -u 10001 -G sudo,root -d /home/user --shell /bin/bash -m user && \
-    # Create sudo rool to allow install of dependencies
-    echo '%sudo ALL = NOPASSWD: /usr/bin/apt, /usr/bin/apt-get' >> /etc/sudoers.d/10-apt && \
+    # Create sudo rule to allow install of dependencies
+    sed -i '/^%sudo/ { s/ALL$/NOPASSWD: ALL/ }' /etc/sudoers && \
     # Setup $PS1 for a consistent and reasonable prompt
     touch /etc/profile.d/prompt.sh && \
     chown 10001 /etc/profile.d/prompt.sh && \
