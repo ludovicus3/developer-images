@@ -13,6 +13,11 @@ if ! whoami &> /dev/null; then
   fi
 fi
 
+if [ -d /public-certs/ ]; then
+  cp /public-certs/* /etc/pki/ca-trust/source/anchors/
+fi
+update-ca-trust
+
 # Stow
 
 # /home/user/ will be mounted to by a PVC if persistUserHome is enabled

@@ -30,6 +30,8 @@ RUN \
     touch /etc/profile.d/udi_prompt.sh && \
     chown 10001 /etc/profile.d/udi_prompt.sh && \
     echo "export PS1='\W \`git branch --show-current 2>/dev/null | sed -r -e \"s@^(.+)@\(\1\) @\"\`$ '" >> /etc/profile.d/udi_prompt.sh && \
+    # Allow user to add ca-trust
+    chmod -R 777 /etc/pki && \
     # Copy the global git configuration to user config as global /etc/gitconfig
     #  file may be overwritten by a mounted file at runtime
     cp /etc/gitconfig ${HOME}/.gitconfig && \
