@@ -11,7 +11,7 @@ LABEL io.k8s.display-name="devfile-developer-puppet"
 USER 0
 
 RUN rpm -Uvh https://yum.puppet.com/puppet-tools-release-el-8.noarch.rpm \
-    && dnf install -y pdk
+    && dnf install -y pdk make
 
 # cleanup dnf cache
 RUN dnf -y clean all --enablerepo='*'
