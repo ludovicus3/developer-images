@@ -10,7 +10,7 @@ LABEL io.k8s.display-name="devfile-developer-rails"
 
 USER 0
 
-RUN apt-get install libpq-devel
+RUN apt-get install libpq-dev
 
 USER 10001
 
