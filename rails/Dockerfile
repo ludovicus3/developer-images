@@ -8,6 +8,10 @@ LABEL summary="devfile rails developer image"
 LABEL description="Image with developers tools. Languages SDK and runtimes included."
 LABEL io.k8s.display-name="devfile-developer-rails"
 
+USER 0
+
+RUN apt-get install libpq-devel
+
 USER 10001
 
 ENV HOME=/home/tooling
