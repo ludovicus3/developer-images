@@ -20,7 +20,7 @@ ENV HOME=/home/tooling
 RUN mkdir -p /home/tooling/.nvm/
 
 ENV NVM_DIR="/home/tooling/.nvm"
-ARG NODEJS_VERSION=18.16.0
+ARG NODEJS_VERSION=20.11.0
 ARG NVM_VERSION=0.39.5
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh | bash
 RUN echo 'export NVM_DIR="$HOME/.nvm"' >> /home/tooling/.bash_profile && \
@@ -29,7 +29,7 @@ RUN source ${NVM_DIR}/nvm.sh && \
     nvm install v${NODEJS_VERSION} && \
     nvm alias default v$NODEJS_VERSION && \
     nvm use v$NODEJS_VERSION && \
-    npm install --global yarn@v1.22.17 && \
+    npm install --global yarn && \
     chgrp -R 0 /home/tooling && chmod -R g=u /home/tooling
 ENV PATH=$NVM_DIR/versions/node/v$NODEJS_VERSION/bin:$PATH
 
