@@ -12,7 +12,7 @@ USER 10001
 
 USER 0
 
-RUN apt install -y build-essential clang g++ gcc clang-tidy clang-format gdb cmake ccache clangd
+RUN apt install -y build-essential clang g++ gcc clang-tidy clang-format gdb cmake ccache clangd libsdl2-dev
 
 # Set permissions on /etc/passwd and /home to allow arbitrary users to write
 RUN chgrp -R 0 /home && chmod -R g=u /etc/passwd /etc/group /home
