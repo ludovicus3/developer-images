@@ -1,7 +1,7 @@
-FROM quay.io/ludovicus/base-developer-image:stream8-latest
+FROM quay.io/ludovicus/base-developer-image:ubi8-latest
 
 LABEL name="devfile/puppet-developer-image"
-LABEL version="stream8"
+LABEL version="ubi8"
 
 #labels for container catalog
 LABEL summary="devfile puppet developer image"

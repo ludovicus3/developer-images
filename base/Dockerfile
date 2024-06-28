@@ -1,7 +1,7 @@
-FROM quay.io/centos/centos:stream8
+FROM registry.access.redhat.com/ubi8/ubi
 
 LABEL name="ludovicus/base-development-image"
-LABEL version="stream8"
+LABEL version="ubi8"
 
 #labels for container catalog
 LABEL summary="devfile base developer image"

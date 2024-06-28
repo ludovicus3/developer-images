@@ -1,8 +1,8 @@
-name: Build of Centos Stream8 based Developer Images
+name: Build of Centos ubi8 based Developer Images
 
 on:
   push:
-    branches: [ stream8 ]
+    branches: [ ubi8 ]
 
   workflow_call:
     # Map the workflow outputs to job outputs
@@ -13,8 +13,8 @@ on:
         required: true
 
 jobs:
-  build_base_stream8_image:
-    name: Build and publish base stream8 image to Quay.io
+  build_base_ubi8_image:
+    name: Build and publish base ubi8 image to Quay.io
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -27,9 +27,9 @@ jobs:
             quay.io/ludovicus/base-developer-image
           flavor: |
             latest=true
-            prefix=stream8-,onlatest=true
+            prefix=ubi8-,onlatest=true
           tags: |
-            type=sha,prefix=stream8-,format=short
+            type=sha,prefix=ubi8-,format=short
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -49,10 +49,10 @@ jobs:
           tags: |
             ${{ steps.meta.outputs.tags }}
 
-  build_rails_stream8_image:
-    name: Build and publish rails stream8 image to Quay.io
+  build_rails_ubi8_image:
+    name: Build and publish rails ubi8 image to Quay.io
     runs-on: ubuntu-22.04
-    needs: build_base_stream8_image
+    needs: build_base_ubi8_image
    # job output for passing to mapping value (the workflow_call section)
     outputs:
       output1: ${{ steps.setTagName.outputs.uniq_tag }}
@@ -67,9 +67,9 @@ jobs:
             quay.io/ludovicus/rails-developer-image
           flavor: |
             latest=true
-            prefix=stream8-,onlatest=true
+            prefix=ubi8-,onlatest=true
           tags: |
-            type=sha,prefix=stream8-,format=short
+            type=sha,prefix=ubi8-,format=short
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -90,17 +90,17 @@ jobs:
             ${{ steps.meta.outputs.tags }}
       - name: Get tag with uniq prefix
         id: setTagName
-        # set the image with uniq tag prefix (for example: quay.io/..../base-developer-image:stream8-7ad6cab) to env. var
+        # set the image with uniq tag prefix (for example: quay.io/..../base-developer-image:ubi8-7ad6cab) to env. var
         # and define it for output. This output with tag image will be used in caller job
         run: |
           UNIQ_TAG_IMAGE=$(echo $DOCKER_METADATA_OUTPUT_JSON | jq .tags[0])
           echo "...................$UNIQ_TAG_IMAGE"
           echo "uniq_tag=$UNIQ_TAG_IMAGE" >> $GITHUB_OUTPUT
 
-  build_pdk_stream8_image:
-    name: Build and publish pdk stream8 image to Quay.io
+  build_pdk_ubi8_image:
+    name: Build and publish pdk ubi8 image to Quay.io
     runs-on: ubuntu-22.04
-    needs: build_base_stream8_image
+    needs: build_base_ubi8_image
    # job output for passing to mapping value (the workflow_call section)
     outputs:
       output1: ${{ steps.setTagName.outputs.uniq_tag }}
@@ -115,9 +115,9 @@ jobs:
             quay.io/ludovicus/pdk-developer-image
           flavor: |
             latest=true
-            prefix=stream8-,onlatest=true
+            prefix=ubi8-,onlatest=true
           tags: |
-            type=sha,prefix=stream8-,format=short
+            type=sha,prefix=ubi8-,format=short
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -138,17 +138,17 @@ jobs:
             ${{ steps.meta.outputs.tags }}
       - name: Get tag with uniq prefix
         id: setTagName
-        # set the image with uniq tag prefix (for example: quay.io/..../base-developer-image:stream8-7ad6cab) to env. var
+        # set the image with uniq tag prefix (for example: quay.io/..../base-developer-image:ubi8-7ad6cab) to env. var
         # and define it for output. This output with tag image will be used in caller job
         run: |
           UNIQ_TAG_IMAGE=$(echo $DOCKER_METADATA_OUTPUT_JSON | jq .tags[0])
           echo "...................$UNIQ_TAG_IMAGE"
           echo "uniq_tag=$UNIQ_TAG_IMAGE" >> $GITHUB_OUTPUT
 
-  build_helm_stream8_image:
-    name: Build and publish helm stream8 image to Quay.io
+  build_helm_ubi8_image:
+    name: Build and publish helm ubi8 image to Quay.io
     runs-on: ubuntu-22.04
-    needs: build_base_stream8_image
+    needs: build_base_ubi8_image
    # job output for passing to mapping value (the workflow_call section)
     outputs:
       output1: ${{ steps.setTagName.outputs.uniq_tag }}
@@ -163,9 +163,9 @@ jobs:
             quay.io/ludovicus/helm-developer-image
           flavor: |
             latest=true
-            prefix=stream8-,onlatest=true
+            prefix=ubi8-,onlatest=true
           tags: |
-            type=sha,prefix=stream8-,format=short
+            type=sha,prefix=ubi8-,format=short
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -186,7 +186,7 @@ jobs:
             ${{ steps.meta.outputs.tags }}
       - name: Get tag with uniq prefix
         id: setTagName
-        # set the image with uniq tag prefix (for example: quay.io/..../base-developer-image:stream8-7ad6cab) to env. var
+        # set the image with uniq tag prefix (for example: quay.io/..../base-developer-image:ubi8-7ad6cab) to env. var
         # and define it for output. This output with tag image will be used in caller job
         run: |
           UNIQ_TAG_IMAGE=$(echo $DOCKER_METADATA_OUTPUT_JSON | jq .tags[0])
