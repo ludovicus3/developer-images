@@ -145,8 +145,8 @@ jobs:
           echo "...................$UNIQ_TAG_IMAGE"
           echo "uniq_tag=$UNIQ_TAG_IMAGE" >> $GITHUB_OUTPUT
 
-  build_graphviz_ubi8_image:
-    name: Build and publish graphviz ubi8 image to Quay.io
+  build_helm_ubi8_image:
+    name: Build and publish helm ubi8 image to Quay.io
     runs-on: ubuntu-22.04
     needs: build_base_ubi8_image
    # job output for passing to mapping value (the workflow_call section)
@@ -160,7 +160,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            quay.io/ludovicus/graphviz-developer-image
+            quay.io/ludovicus/helm-developer-image
           flavor: |
             latest=true
             prefix=ubi8-,onlatest=true
@@ -176,12 +176,12 @@ jobs:
           registry: quay.io
           username: ${{ secrets.QUAY_USERNAME }}
           password: ${{ secrets.QUAY_PASSWORD }}
-      - name: Docker Build & Push graphviz
+      - name: Docker Build & Push helm
         uses: docker/build-push-action@v4
         with:
           push: ${{ github.event_name != 'pull_request' }}
           provenance: false
-          context: graphviz
+          context: helm
           tags: |
             ${{ steps.meta.outputs.tags }}
       - name: Get tag with uniq prefix
