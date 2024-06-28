@@ -32,7 +32,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            quay.io/devfile/base-developer-image
+            quay.io/ludovicus3/base-developer-image
           flavor: |
             latest=true
             prefix=ubi8-,onlatest=true
@@ -55,7 +55,7 @@ jobs:
           provenance: false
           context: base/ubi8
           tags: |
-            quay.io/devfile/base-developer-image:latest
+            quay.io/ludovicus3/base-developer-image:latest
             ${{ steps.meta.outputs.tags }}
 
   build_universal_ubi8_image:
@@ -76,7 +76,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            quay.io/devfile/universal-developer-image
+            quay.io/ludovicus3/universal-developer-image
           flavor: |
             latest=true
             prefix=ubi8-,onlatest=true
@@ -99,7 +99,7 @@ jobs:
           provenance: false
           context: universal/ubi8
           tags: |
-            quay.io/devfile/universal-developer-image:latest
+            quay.io/ludovicus3/universal-developer-image:latest
             ${{ steps.meta.outputs.tags }}
       - name: Get tag with uniq prefix
         id: setTagName
