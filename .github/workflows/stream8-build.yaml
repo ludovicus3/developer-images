@@ -11,11 +11,6 @@ on:
         required: true
       QUAY_PASSWORD:
         required: true
-    outputs:
-      uniq_tag:
-        description: "The first output string"
-        value: ${{ jobs.build_rails_stream8_image.outputs.output1 }}
-
 
 jobs:
   build_base_stream8_image:
@@ -139,6 +134,54 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           provenance: false
           context: puppet
+          tags: |
+            ${{ steps.meta.outputs.tags }}
+      - name: Get tag with uniq prefix
+        id: setTagName
+        # set the image with uniq tag prefix (for example: quay.io/..../base-developer-image:stream8-7ad6cab) to env. var
+        # and define it for output. This output with tag image will be used in caller job
+        run: |
+          UNIQ_TAG_IMAGE=$(echo $DOCKER_METADATA_OUTPUT_JSON | jq .tags[0])
+          echo "...................$UNIQ_TAG_IMAGE"
+          echo "uniq_tag=$UNIQ_TAG_IMAGE" >> $GITHUB_OUTPUT
+
+  build_helm_stream8_image:
+    name: Build and publish helm stream8 image to Quay.io
+    runs-on: ubuntu-22.04
+    needs: build_base_stream8_image
+   # job output for passing to mapping value (the workflow_call section)
+    outputs:
+      output1: ${{ steps.setTagName.outputs.uniq_tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            quay.io/ludovicus/helm-developer-image
+          flavor: |
+            latest=true
+            prefix=stream8-,onlatest=true
+          tags: |
+            type=sha,prefix=stream8-,format=short
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to Quay.io
+        uses: docker/login-action@v2
+        with:
+          registry: quay.io
+          username: ${{ secrets.QUAY_USERNAME }}
+          password: ${{ secrets.QUAY_PASSWORD }}
+      - name: Docker Build & Push helm
+        uses: docker/build-push-action@v4
+        with:
+          push: ${{ github.event_name != 'pull_request' }}
+          provenance: false
+          context: helm
           tags: |
             ${{ steps.meta.outputs.tags }}
       - name: Get tag with uniq prefix
