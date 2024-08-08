@@ -1,7 +1,7 @@
-FROM quay.io/ludovicus/base-developer-image:stream8-latest
+FROM quay.io/ludovicus/base-developer-image:stream9-latest
 
 LABEL name="devfile/helm-developer-image"
-LABEL version="stream8"
+LABEL version="stream9"
 
 #labels for container catalog
 LABEL summary="devfile helm developer image"

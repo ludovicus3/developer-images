@@ -1,4 +1,4 @@
-FROM quay.io/ludovicus/base-developer-image:stream8-latest
+FROM quay.io/ludovicus/base-developer-image:stream9-latest
 
 LABEL name="devfile/rails-developer-image"
 LABEL version="ubi8"
