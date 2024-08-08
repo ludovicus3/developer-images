@@ -11,19 +11,17 @@ LABEL io.openshift.expose-services=""
 
 USER 0
 
-# Python
-RUN dnf -y module enable python39:3.9 && \
-    dnf -y update && \
-    dnf -y install python39 python39-devel python39-setuptools python39-pip nss_wrapper
-
 ENV PROFILE_EXT=/etc/profile.d/udi_environment.sh
 RUN touch ${PROFILE_EXT} && chown 10001 ${PROFILE_EXT}
 
+# Python
+RUN dnf -y install python3.11 python3.11-devel python3.11-setuptools python3.11-pip nss_wrapper
+
 RUN cd /usr/bin \
-    && if [ ! -L python ]; then ln -s python3.9 python; fi \
-    && if [ ! -L pydoc ]; then ln -s pydoc3.9 pydoc; fi \
-    && if [ ! -L python-config ]; then ln -s python3.9-config python-config; fi \
-    && if [ ! -L pip ]; then ln -s pip-3.9 pip; fi
+    && if [ ! -L python ]; then ln -s python3.11 python; fi \
+    && if [ ! -L pydoc ]; then ln -s pydoc3.11 pydoc; fi \
+    && if [ ! -L python-config ]; then ln -s python3.11-config python-config; fi \
+    && if [ ! -L pip ]; then ln -s pip-3.11 pip; fi
 
 RUN pip install pylint yq
 
