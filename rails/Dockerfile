@@ -1,4 +1,4 @@
-FROM quay.io/ludovicus/base-developer-image:bookworm-latest
+FROM quay.io/ludovicus/base-developer-image:bookworm
 
 LABEL name="devfile/rails-developer-image"
 LABEL version="bookworm"
