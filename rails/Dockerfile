@@ -1,7 +1,8 @@
-FROM quay.io/ludovicus/base-developer-image:bookworm
+ARG DEBIAN_VERSION=bookworm
+FROM quay.io/ludovicus/base-developer-image:${DEBIAN_VERSION}
 
 LABEL name="devfile/rails-developer-image"
-LABEL version="bookworm"
+LABEL version="${DEBIAN_VERSION}"
 
 #labels for container catalog
 LABEL summary="devfile rails developer image"
