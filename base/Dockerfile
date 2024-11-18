@@ -25,6 +25,7 @@ RUN apt-get clean
 
 COPY --chown=0:0 entrypoint.sh /
 COPY --chown=0:0 .stow-local-ignore /home/tooling/
+
 RUN \
     # add user and configure it
     useradd -u 10001 -G sudo,root -d /home/user --shell /bin/bash -m user && \
