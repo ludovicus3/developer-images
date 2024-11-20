@@ -49,7 +49,8 @@ RUN touch /etc/subgid /etc/subuid  && \
     echo user:10000:65536 > /etc/subgid
 
 # Adjust storage.conf to enable Fuse storage.
-RUN sed -i -e 's|^#mount_program|mount_program|g' -e '/additionalimage.*/a "/var/lib/shared",' /etc/containers/storage.conf
+COPY --chown 0:0 storage.conf /etc/containers/storage.conf
+#RUN sed -i -e 's|^#mount_program|mount_program|g' -e '/additionalimage.*/a "/var/lib/shared",' /etc/containers/storage.conf
 RUN mkdir -p /var/lib/shared/overlay-images /var/lib/shared/overlay-layers; \
     touch /var/lib/shared/overlay-images/images.lock; \
     touch /var/lib/shared/overlay-layers/layers.lock
