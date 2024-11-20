@@ -23,8 +23,41 @@ RUN apt-get install -y bash curl diffutils git git-lfs iproute2 jq less lsof man
             socat sudo time vim wget zip gpg yq brotli nodejs stow
 RUN apt-get clean
 
+## podman buildah skopeo
+RUN apt-get install -y podman buildah skopeo fuse-overlayfs && \
+    apt-get clean
+
+## gh-cli ripgrep bat fd
+RUN apt-get install -y gh ripgrep bat fd-find && \
+    apt-get clean
+
 COPY --chown=0:0 entrypoint.sh /
 COPY --chown=0:0 .stow-local-ignore /home/tooling/
+
+# Define user directory for binaries
+ENV PATH="/home/user/.local/bin:$PATH"
+
+# Set up environment variables to note that this is
+# not starting with usernamespace and default to
+# isolate the filesystem with chroot.
+ENV _BUILDAH_STARTED_IN_USERNS="" BUILDAH_ISOLATION=chroot
+
+# Tweaks to make rootless buildah work
+RUN touch /etc/subgid /etc/subuid  && \
+    chmod g=u /etc/subgid /etc/subuid /etc/passwd  && \
+    echo user:10000:65536 > /etc/subuid  && \
+    echo user:10000:65536 > /etc/subgid
+
+# Adjust storage.conf to enable Fuse storage.
+RUN sed -i -e 's|^#mount_program|mount_program|g' -e '/additionalimage.*/a "/var/lib/shared",' /etc/containers/storage.conf
+RUN mkdir -p /var/lib/shared/overlay-images /var/lib/shared/overlay-layers; \
+    touch /var/lib/shared/overlay-images/images.lock; \
+    touch /var/lib/shared/overlay-layers/layers.lock
+
+# But use VFS since not all environments support overlay with Fuse backend
+RUN mkdir -p "${HOME}"/.config/containers && \
+   (echo '[storage]';echo 'driver = "vfs"') > "${HOME}"/.config/containers/storage.conf && \
+   chown -R 10001 "${HOME}"/.config
 
 RUN \
     # add user and configure it
