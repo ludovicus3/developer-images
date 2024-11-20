@@ -11,7 +11,9 @@ LABEL io.k8s.display-name="devfile-developer-rails"
 
 USER 0
 
-RUN apt-get install -y postgresql libpq-dev
+ARG ADDITIONAL_PACKAGES=""
+RUN apt-get install -y postgresql libpq-dev ${ADDITIONAL_PACKAGES} && \
+    apt-get clean
 
 USER 10001
 
@@ -22,7 +24,7 @@ RUN mkdir -p /home/tooling/.nvm/
 
 ENV NVM_DIR="/home/tooling/.nvm"
 ARG NODEJS_VERSION=20.11.0
-ARG NVM_VERSION=0.39.5
+ARG NVM_VERSION=0.40.1
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh | bash
 RUN echo 'export NVM_DIR="$HOME/.nvm"' >> /home/tooling/.bash_profile && \
     echo '[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"' >> /home/tooling/.bash_profile
