@@ -32,7 +32,7 @@ ENV NODEJS_DEFAULT_VERSION=${NODEJS_18_VERSION}
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | PROFILE=/dev/null bash
 RUN echo 'export NVM_DIR="$HOME/.nvm"' >> ${PROFILE_EXT} \
     && echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> ${PROFILE_EXT}
-RUN source /home/user/.bashrc && \
+RUN source ${NVM_DIR}/nvm.sh && \
     nvm install v${NODEJS_20_VERSION} && \
     nvm install v${NODEJS_18_VERSION} && \
     nvm alias default v${NODEJS_DEFAULT_VERSION} && nvm use v${NODEJS_DEFAULT_VERSION} && \
