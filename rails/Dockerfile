@@ -15,6 +15,10 @@ ARG ADDITIONAL_PACKAGES=""
 RUN apt-get install -y postgresql libpq-dev ${ADDITIONAL_PACKAGES} && \
     apt-get clean
 
+# $PROFILE_EXT contains all additions made to the bash environment
+ENV PROFILE_EXT=/etc/profile.d/udi_environment.sh
+RUN touch ${PROFILE_EXT} && chown 10001 ${PROFILE_EXT}
+
 USER 10001
 
 ENV HOME=/home/tooling
@@ -51,6 +55,8 @@ RUN ${RVM_DIR}/bin/rvm requirements
 RUN rm -rf ${RVM_DIR}/log/*
 
 USER 10001
+RUN echo 'export RVM_DIR="$HOME/.rvm"' >> ${PROFILE_EXT} \
+    && echo '[ -s "$RVM_DIR/scripts/rvm" ] && \. "$RVM_DIR/scripts/rvm"' >> ${PROFILE_EXT}
 RUN source ${RVM_DIR}/scripts/rvm && \
     rvm pkg install openssl && \
     rvm install ruby-${RUBY_VERSION} --with-openssl-dir=${RVM_DIR}/usr && \
