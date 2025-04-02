@@ -20,7 +20,7 @@ RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install -y bash curl diffutils git git-lfs iproute2 jq less lsof man nano \
             procps p7zip-full libdigest-sha-perl net-tools openssh-client rsync \
-            socat sudo time vim wget zip gpg yq brotli nodejs stow
+            socat sudo time vim wget zip gpg yq brotli stow
 RUN apt-get clean
 
 ## podman buildah skopeo
@@ -82,9 +82,6 @@ RUN \
     chown 10001 /home/tooling/.bashrc
 
 USER 10001
-
-# needed for the injected workspace to work
-ENV VSCODE_NODEJS_RUNTIME_DIR=/usr/bin
 
 ENV HOME=/home/user
 WORKDIR /projects

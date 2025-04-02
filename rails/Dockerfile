@@ -21,20 +21,22 @@ ENV HOME=/home/tooling
 
 # NodeJS
 RUN mkdir -p /home/tooling/.nvm/
-
 ENV NVM_DIR="/home/tooling/.nvm"
-ARG NODEJS_VERSION=20.11.0
-ARG NVM_VERSION=0.40.1
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh | bash
-RUN echo 'export NVM_DIR="$HOME/.nvm"' >> /home/tooling/.bash_profile && \
-    echo '[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"' >> /home/tooling/.bash_profile
-RUN source ${NVM_DIR}/nvm.sh && \
-    nvm install v${NODEJS_VERSION} && \
-    nvm alias default v$NODEJS_VERSION && \
-    nvm use v$NODEJS_VERSION && \
-    npm install --global yarn && \
+ENV NODEJS_20_VERSION=20.18.1
+ENV NODEJS_18_VERSION=18.20.5
+ENV NODEJS_DEFAULT_VERSION=${NODEJS_18_VERSION}
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | PROFILE=/dev/null bash
+RUN echo 'export NVM_DIR="$HOME/.nvm"' >> ${PROFILE_EXT} \
+    && echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> ${PROFILE_EXT}
+RUN source /home/user/.bashrc && \
+    nvm install v${NODEJS_20_VERSION} && \
+    nvm install v${NODEJS_18_VERSION} && \
+    nvm alias default v${NODEJS_DEFAULT_VERSION} && nvm use v${NODEJS_DEFAULT_VERSION} && \
+    npm install --global yarn@v1.22.22 &&\
     chgrp -R 0 /home/tooling && chmod -R g=u /home/tooling
-ENV PATH=$NVM_DIR/versions/node/v$NODEJS_VERSION/bin:$PATH
+ENV PATH=$NVM_DIR/versions/node/v${NODEJS_DEFAULT_VERSION}/bin:$PATH
+ENV NODEJS_HOME_20=$NVM_DIR/versions/node/v${NODEJS_20_VERSION}
+ENV NODEJS_HOME_18=$NVM_DIR/versions/node/v${NODEJS_18_VERSION}
 
 # Ruby
 RUN mkdir -p /home/tooling/.rvm/
