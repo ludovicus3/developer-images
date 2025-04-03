@@ -8,6 +8,9 @@ on:
       - base
   pull_request:
     branches: [ "develop" ]
+  release:
+    types:
+      - created
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: quay.io

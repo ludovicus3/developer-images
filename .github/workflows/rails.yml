@@ -1,13 +1,16 @@
 name: Build Rails Developer Image
 on:
-  schedule:
-    - cron: "30 3 1 * *"
   push:
     branches: [ "develop"]
     paths:
       - rails
   pull_request:
     branches: [ "develop" ]
+  workflow_run:
+    workflows:
+      - Build Base Developer Image
+    types:
+      - completed
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: quay.io
