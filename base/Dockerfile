@@ -1,8 +1,8 @@
 ARG DEBIAN_VERSION=bookworm
-FROM debian:${DEBIAN_VERSION}
+FROM debian:bookworm
 
 LABEL name="ludovicus/base-development-image"
-LABEL version="${DEBIAN_VERSION}"
+LABEL version="bookworm"
 
 #labels for container catalog
 LABEL summary="devfile base developer image"
