@@ -4,6 +4,8 @@ on:
     - cron: "30 3 1 * *"
   push:
     branches: [ "develop"]
+    paths:
+      - base
   pull_request:
     branches: [ "develop" ]
 env:
