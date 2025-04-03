@@ -1,4 +1,4 @@
-ARG DEBIAN_VERSION=bookworm-slim
+ARG DEBIAN_VERSION=bookworm
 FROM debian:${DEBIAN_VERSION}
 
 LABEL name="ludovicus/base-development-image"
