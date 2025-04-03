@@ -3,7 +3,7 @@ on:
   push:
     branches: [ "develop"]
     paths:
-      - rails
+      - rails/**/*
   pull_request:
     branches: [ "develop" ]
   workflow_run:
