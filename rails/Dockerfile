@@ -12,8 +12,11 @@ LABEL io.k8s.display-name="devfile-developer-rails"
 USER 0
 
 ARG ADDITIONAL_PACKAGES=""
-RUN apt-get install -y postgresql libpq-dev ${ADDITIONAL_PACKAGES} && \
-    apt-get clean
+RUN \
+  set -eux; \
+  apt-get update; \
+  apt-get install -y --no-install-recommends libpq libpq-dev ${ADDITIONAL_PACKAGES}; \
+  rm -rf /var/lib/apt/lists/*
 
 # $PROFILE_EXT contains all additions made to the bash environment
 ENV PROFILE_EXT=/etc/profile.d/udi_environment.sh
