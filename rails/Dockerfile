@@ -15,7 +15,7 @@ ARG ADDITIONAL_PACKAGES=""
 RUN \
   set -eux; \
   apt-get update; \
-  apt-get install -y --no-install-recommends libpq libpq-dev ${ADDITIONAL_PACKAGES}; \
+  apt-get install -y --no-install-recommends dirmngr gpg-agent libpq5 libpq-dev ${ADDITIONAL_PACKAGES}; \
   rm -rf /var/lib/apt/lists/*
 
 # $PROFILE_EXT contains all additions made to the bash environment
@@ -24,23 +24,31 @@ RUN touch ${PROFILE_EXT} && chown 10001 ${PROFILE_EXT}
 
 USER 10001
 
+ENV SHELL=/bin/bash
 ENV HOME=/home/tooling
 
 # NodeJS
-RUN mkdir -p /home/tooling/.nvm/
 ENV NVM_DIR="/home/tooling/.nvm"
+RUN mkdir -p ${NVM_DIR}/
 ENV NODEJS_20_VERSION=20.18.1
 ENV NODEJS_18_VERSION=18.20.5
 ENV NODEJS_DEFAULT_VERSION=${NODEJS_18_VERSION}
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | PROFILE=/dev/null bash
-RUN echo 'export NVM_DIR="$HOME/.nvm"' >> ${PROFILE_EXT} \
-    && echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> ${PROFILE_EXT}
-RUN source ${NVM_DIR}/nvm.sh && \
-    nvm install v${NODEJS_20_VERSION} && \
-    nvm install v${NODEJS_18_VERSION} && \
-    nvm alias default v${NODEJS_DEFAULT_VERSION} && nvm use v${NODEJS_DEFAULT_VERSION} && \
-    npm install --global yarn@v1.22.22 &&\
-    chgrp -R 0 /home/tooling && chmod -R g=u /home/tooling
+ARG NVM_VERSION=v0.40.1
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh | PROFILE=/dev/null bash
+RUN \
+  set -eux; \
+  echo 'export NVM_DIR="$HOME/.nvm"' >> ${PROFILE_EXT}; \
+  echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> ${PROFILE_EXT}
+RUN \
+  set -eux; \
+  source ${NVM_DIR}/nvm.sh; \
+  nvm install v${NODEJS_20_VERSION}; \
+  nvm install v${NODEJS_18_VERSION}; \
+  nvm alias default v${NODEJS_DEFAULT_VERSION}; \
+  nvm use v${NODEJS_DEFAULT_VERSION}; \
+  npm install --global yarn@v1.22.22; \
+  chgrp -R 0 /home/tooling; \
+  chmod -R g=u /home/tooling
 ENV PATH=$NVM_DIR/versions/node/v${NODEJS_DEFAULT_VERSION}/bin:$PATH
 ENV NODEJS_HOME_20=$NVM_DIR/versions/node/v${NODEJS_20_VERSION}
 ENV NODEJS_HOME_18=$NVM_DIR/versions/node/v${NODEJS_18_VERSION}
@@ -54,38 +62,52 @@ RUN curl -sSL https://get.rvm.io | bash -s stable
 
 USER 0
 
-RUN ${RVM_DIR}/bin/rvm requirements
-RUN rm -rf ${RVM_DIR}/log/*
+RUN \
+  set -eux; \
+  ${RVM_DIR}/bin/rvm requirements; \
+  rm -rf ${RVM_DIR}/log/*; \
+  rm -rf /var/lib/apt/lists/*
 
 USER 10001
-RUN echo 'export RVM_DIR="$HOME/.rvm"' >> ${PROFILE_EXT} \
-    && echo '[ -s "$RVM_DIR/scripts/rvm" ] && \. "$RVM_DIR/scripts/rvm"' >> ${PROFILE_EXT}
-RUN source ${RVM_DIR}/scripts/rvm && \
-    rvm pkg install openssl && \
-    rvm install ruby-${RUBY_VERSION} --with-openssl-dir=${RVM_DIR}/usr && \
-    chgrp -R 0 /home/tooling && chmod -R g=u /home/tooling
+RUN \
+  set -eux; \
+  echo 'export RVM_DIR="$HOME/.rvm"' >> ${PROFILE_EXT}; \
+  echo '[ -s "$RVM_DIR/scripts/rvm" ] && \. "$RVM_DIR/scripts/rvm"' >> ${PROFILE_EXT}
+RUN \
+  set -eux; \
+  ${RVM_DIR}/bin/rvm pkg install openssl; \
+  ${RVM_DIR}/bin/rvm install ruby-${RUBY_VERSION} --with-openssl-dir=${RVM_DIR}/usr; \
+  chgrp -R 0 /home/tooling; \
+  chmod -R g=u /home/tooling
 
 USER 0
 
 # Define user directory for binaries
-RUN mkdir -p /home/tooling/.local/bin && \
-    chgrp -R 0 /home && chmod -R g=u /home
+RUN \
+  set -eux; \
+  mkdir -p /home/tooling/.local/bin; \
+  chgrp -R 0 /home; \
+  chmod -R g=u /home
 ENV PATH="/home/user/.local/bin:$PATH"
 ENV PATH="/home/tooling/.local/bin:$PATH"
 
-RUN cat ${NVM_DIR}/bash_completion > /usr/share/bash-completion/completions/nvm && \
-    cat ${RVM_DIR}/scripts/completion > /usr/share/bash-completion/completions/rvm
+RUN \
+  set -eux; \
+  cat ${NVM_DIR}/bash_completion > /usr/share/bash-completion/completions/nvm; \
+  cat ${RVM_DIR}/scripts/completion > /usr/share/bash-completion/completions/rvm
 
 # Create symbolic links from /home/tooling/ -> /home/user/
-RUN stow . -t /home/user/ -d /home/tooling/ --no-folding && \
-    cp /home/tooling/.bashrc /home/user/.bashrc && \
-    cp /home/tooling/.bash_profile /home/user/.bash_profile
+RUN \
+  set -eux; \
+  stow . -t /home/user/ -d /home/tooling/ --no-folding; \
+  cp /home/tooling/.bashrc /home/user/.bashrc; \
+  cp /home/tooling/.bash_profile /home/user/.bash_profile
 
 # Set permissions on /etc/passwd and /home to allow arbitrary users to write
-RUN chgrp -R 0 /home && chmod -R g=u /etc/passwd /etc/group /home
-
-# cleanup apt cache
-RUN apt clean
+RUN \
+  set -eux; \
+  chgrp -R 0 /home; \
+  chmod -R g=u /etc/passwd /etc/group /home
 
 USER 10001
 
