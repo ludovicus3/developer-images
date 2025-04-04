@@ -2,7 +2,7 @@ ARG DEBIAN_VERSION=bookworm-slim
 FROM debian:${DEBIAN_VERSION}
 
 LABEL name="ludovicus/base-development-image"
-LABEL version="${DEBIAN_VERSION}"
+LABEL version=${DEBIAN_VERSION}
 
 #labels for container catalog
 LABEL summary="devfile base developer image"
