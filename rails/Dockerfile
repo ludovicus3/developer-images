@@ -63,14 +63,20 @@ RUN \
   echo '[ -s "$RVM_DIR/scripts/rvm" ] && \. "$RVM_DIR/scripts/rvm"' >> ${PROFILE_EXT}
 RUN \
   set -eux; \
-  ${RVM_DIR}/bin/rvm install ruby-${RUBY_VERSION}; \
+  ${RVM_DIR}/bin/rvm pkg install openssl; \
+  ${RVM_DIR}/bin/rvm install ruby-${RUBY_VERSION} --with-openssl-dir=${RVM_DIR}/usr; \
   chgrp -R 0 /home/tooling; \
   chmod -R g=u /home/tooling
 
 USER 0
 
 # Create symbolic links from /home/tooling/ -> /home/user/
-RUN stow . -t /home/user/ -d /home/tooling/ --no-folding
+RUN \
+  set -eux; \
+  find /home/tooling/ -type l -lname '/*' -delete; \
+  stow . -t /home/user/ -d /home/tooling/ --no-folding; \
+  cp /home/tooling/.bashrc /home/user/.bashrc; \
+  cp /home/tooling/.bash_profile /home/user/.bash_profile
 
 # Set permissions on /etc/passwd, /etc/group, /etc/pki and /home to allow arbitrary users to write
 RUN \

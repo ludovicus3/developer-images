@@ -6,3 +6,6 @@
 \.bashrc
 \.bash_profile
 \.profile
+
+# Ignore files under .config directory
+\.config
