@@ -17,7 +17,7 @@ RUN \
   dnf install -y pdk make gcc; \
   dnf clean all -y --enablerepo='*'
 
-RUN pdk env >> ${PROFILE_EXT}}
+RUN pdk env >> ${PROFILE_EXT}
 
 # Create symbolic links from /home/tooling/ -> /home/user/
 RUN stow . -t /home/user/ -d /home/tooling/ --no-folding
