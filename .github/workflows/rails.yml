@@ -46,9 +46,8 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            latest
-            bookworm
-            type=schedule,pattern={{date 'YYYYMMDD'}}
+            ubi9-latest
+            type=schedule,pattern=ubi9-{{date 'YYYYMMDD'}}
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@v4.0.0
