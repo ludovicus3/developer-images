@@ -30,9 +30,8 @@ ENV HOME=/home/tooling
 # NodeJS
 ENV NVM_DIR="/home/tooling/.nvm"
 RUN mkdir -p ${NVM_DIR}/
-ARG NODEJS_VERSION=20.18.1
-ARG NVM_VERSION=0.40.1
-ARG NODEJS_DEFAULT_VERSION=${NODEJS_VERSION}
+ENV NODEJS_VERSION=20.18.1
+ENV NVM_VERSION=0.40.1
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh | PROFILE=/dev/null bash
 RUN \
   set -eux; \
@@ -47,13 +46,12 @@ RUN \
   npm install --global yarn@v1.22.22; \
   chgrp -R 0 /home/tooling; \
   chmod -R g=u /home/tooling
-ENV PATH=$NVM_DIR/versions/node/v${NODEJS_DEFAULT_VERSION}/bin:$PATH
 ENV NODEJS_HOME=$NVM_DIR/versions/node/v${NODEJS_VERSION}
 
 # Ruby
 RUN mkdir -p /home/tooling/.rvm/
 ENV RVM_DIR="/home/tooling/.rvm"
-ARG RUBY_VERSION=3.0.0
+ENV RUBY_VERSION=3.0.0
 RUN gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
 RUN curl -sSL https://get.rvm.io | bash -s stable
 
