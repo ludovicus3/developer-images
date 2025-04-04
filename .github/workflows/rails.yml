@@ -1,11 +1,14 @@
 name: Build Rails Developer Image
 on:
   push:
-    branches: [ "develop"]
+    branches:
+      - develop
     paths:
-      - rails/**/*
+      - 'rails/**/*'
+      - '!base/**/*'
   pull_request:
-    branches: [ "develop" ]
+    branches: 
+      - develop
   workflow_run:
     workflows:
       - Build Base Developer Image
