@@ -1,8 +1,8 @@
-ARG DEBIAN_VERSION=bookworm
-FROM debian:bookworm
+ARG DEBIAN_VERSION=bookworm-slim
+FROM debian:${DEBIAN_VERSION}
 
 LABEL name="ludovicus/base-development-image"
-LABEL version="bookworm"
+LABEL version="${DEBIAN_VERSION}"
 
 #labels for container catalog
 LABEL summary="devfile base developer image"
@@ -20,7 +20,7 @@ RUN \
   apt-get update; \
   apt-get install -y --no-install-recommends bash curl diffutils git git-lfs iproute2 jq less lsof man nano \
             procps p7zip-full libdigest-sha-perl net-tools openssh-client rsync \
-            socat sudo time vim wget zip gpg yq brotli stow ca-certificates; \
+            socat sudo time vim wget zip gpg yq brotli stow nodejs npm ca-certificates; \
   rm -rf /var/lib/apt/lists/*
 
 ## podman buildah skopeo
