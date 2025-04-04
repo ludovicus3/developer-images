@@ -4,8 +4,8 @@ on:
     branches:
       - develop
     paths:
-      - 'rails/**/*'
       - '!base/**/*'
+      - 'rails/**/*'
   pull_request:
     branches: 
       - develop
