@@ -20,7 +20,7 @@ RUN \
   apt-get update; \
   apt-get install -y --no-install-recommends bash curl diffutils git git-lfs iproute2 jq less lsof man nano \
             procps p7zip-full libdigest-sha-perl net-tools openssh-client rsync \
-            socat sudo time vim wget zip gpg yq brotli stow nodejs npm yarnpkg ca-certificates; \
+            socat sudo time vim wget zip gpg yq brotli stow ca-certificates; \
   rm -rf /var/lib/apt/lists/*
 
 ## podman buildah skopeo
@@ -88,6 +88,8 @@ RUN \
   chown 10001 /home/tooling/.bashrc
 
 USER 10001
+
+ENV VSCODE_NODEJS_RUNTIME_DIR=/checode/checode-linux-musl
 
 ENV HOME=/home/user
 WORKDIR /projects

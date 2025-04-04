@@ -31,8 +31,8 @@ ENV HOME=/home/tooling
 ENV NVM_DIR="/home/tooling/.nvm"
 RUN mkdir -p ${NVM_DIR}/
 ARG NODEJS_VERSION=20.18.1
-ARG NVM_VERSION=v0.40.1
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh | PROFILE=/dev/null bash
+ARG NVM_VERSION=0.40.1
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh | PROFILE=/dev/null bash
 RUN \
   set -eux; \
   echo 'export NVM_DIR="$HOME/.nvm"' >> ${PROFILE_EXT}; \
@@ -41,8 +41,9 @@ RUN \
   set -eux; \
   source ${NVM_DIR}/nvm.sh; \
   nvm install v${NODEJS_VERSION}; \
-  nvm alias default system; \
-  nvm use system; \
+  nvm alias default v${NODEJS_VERSION};; \
+  nvm use v${NODEJS_VERSION}; \
+  npm install --global yarn@v1.22.22; \
   chgrp -R 0 /home/tooling; \
   chmod -R g=u /home/tooling
 ENV NODEJS_HOME=$NVM_DIR/versions/node/v${NODEJS_VERSION}
