@@ -12,16 +12,16 @@ LABEL io.k8s.display-name="devfile-developer-base"
 USER 0
 
 RUN \
-  ln -s bash /bin/sh.bash; \
-  mv /bin/sh.bash /bin/sh
-
-RUN \
   set -eux; \
   apt-get update; \
-  apt-get install -y --no-install-recommends bash curl diffutils git git-lfs iproute2 jq less lsof man nano \
+  apt-get install -y --no-install-recommends libsecret-1-0 libxkbfile1 bash curl diffutils git git-lfs iproute2 jq less lsof man nano \
             procps p7zip-full libdigest-sha-perl net-tools openssh-client rsync \
             socat sudo time vim wget zip gpg yq brotli stow ca-certificates; \
   rm -rf /var/lib/apt/lists/*
+
+RUN \
+  ln -s bash /bin/sh.bash; \
+  mv /bin/sh.bash /bin/sh
 
 ## podman buildah skopeo
 RUN \
