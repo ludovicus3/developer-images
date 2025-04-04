@@ -50,6 +50,8 @@ USER 0
 
 RUN \
   set -eux; \
+  dnf install -y https://www.rpmfind.net/linux/centos-stream/9-stream/AppStream/x86_64/os/Packages/bison-3.7.4-5.el9.x86_64.rpm; \
+  dnf install -y https://www.rpmfind.net/linux/centos-stream/9-stream/AppStream/x86_64/os/Packages/readline-devel-8.1-4.el9.x86_64.rpm; \
   ${RVM_DIR}/bin/rvm requirements; \
   rm -rf ${RVM_DIR}/log/*; \
   dnf clean all --enablerepo='*'
