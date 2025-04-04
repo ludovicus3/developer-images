@@ -43,7 +43,6 @@ RUN \
   nvm install v${NODEJS_VERSION}; \
   nvm alias default system; \
   nvm use system; \
-  npm install --global yarn@v1.22.22; \
   chgrp -R 0 /home/tooling; \
   chmod -R g=u /home/tooling
 ENV NODEJS_HOME=$NVM_DIR/versions/node/v${NODEJS_VERSION}
