@@ -1,23 +1,20 @@
-name: Build Rails Developer Image
+name: Build Puppet Developer Image
 on:
+  schedule:
+    - cron: "30 3 1 * *"
   push:
     branches:
       - develop
     paths:
-      - 'rails/**/*'
+      - 'pdk/**/*'
   pull_request:
     branches: 
       - develop
-  workflow_run:
-    workflows:
-      - Build Base Developer Image
-    types:
-      - completed
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: quay.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ vars.QUAY_ACCOUNT }}/rails-developer-image
+  IMAGE_NAME: ${{ vars.QUAY_ACCOUNT }}/pdk-developer-image
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -46,9 +43,8 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            latest
-            bookworm
-            type=schedule,pattern={{date 'YYYYMMDD'}}
+            ubi9-latest
+            type=schedule,pattern=ubi9-{{date 'YYYYMMDD'}}
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@v4.0.0
