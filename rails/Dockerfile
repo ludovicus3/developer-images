@@ -65,7 +65,7 @@ RUN \
   set -eux; \
   ${RVM_DIR}/bin/rvm pkg install openssl; \
   ${RVM_DIR}/bin/rvm install ruby-${RUBY_VERSION} --with-openssl-dir=${RVM_DIR}/usr; \
-  ${RVM_DIR}/bin/rvm use --default ${RUBY_VERSION}; \
+  ${RVM_DIR}/bin/rvm use --default ruby-${RUBY_VERSION}; \
   chgrp -R 0 /home/tooling; \
   chmod -R g=u /home/tooling
 
