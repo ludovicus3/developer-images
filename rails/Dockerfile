@@ -59,7 +59,7 @@ RUN \
 USER 10001
 RUN \
   set -eux; \
-  echo 'export RVM_DIR="$HOME/.rvm"' >> ${PROFILE_EXT}; \
+  echo 'export RVM_DIR="/home/tooling/.rvm"' >> ${PROFILE_EXT}; \
   echo '[ -s "$RVM_DIR/scripts/rvm" ] && \. "$RVM_DIR/scripts/rvm"' >> ${PROFILE_EXT}
 RUN \
   set -eux; \
