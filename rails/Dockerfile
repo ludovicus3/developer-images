@@ -7,7 +7,7 @@ LABEL version="ubi9"
 USER 0
 
 RUN \
-  dnf install -y libpq libpq-devel
+  dnf install -y libpq libpq-devel libyaml libyaml-devel
 
 # $PROFILE_EXT contains all additions made to the bash environment
 ENV PROFILE_EXT=/etc/profile.d/udi_environment.sh
