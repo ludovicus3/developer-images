@@ -11,8 +11,8 @@ ARG FOREMAN_REF=3.3-stable
 USER 0
 
 RUN \
-  dnf module enable ruby:2.7 nodejs:12; \
-  dnf install -y postgresql-libs ruby{,gems} rubygem-{rake,bundler} npm nc hostname redhat-rpm-config git \
+  dnf -y module enable ruby:2.7 nodejs:12; \
+  dnf -y install postgresql-libs ruby{,gems} rubygem-{rake,bundler} npm nc hostname redhat-rpm-config git \
     gcc-c++ make bzip2 gettext tar libxml2-devel libcurl-devel ruby-devel postgresql-devel; \
   dnf clean all
 
