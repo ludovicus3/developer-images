@@ -1,4 +1,4 @@
-name: Build foreman Developer Image
+name: Build Foreman Developer Image
 on:
   push:
     branches:
