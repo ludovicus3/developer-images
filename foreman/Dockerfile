@@ -12,9 +12,10 @@ USER 0
 
 RUN \
   dnf -y module enable ruby:2.7 nodejs:12; \
-  dnf -y install postgresql postgresql-libs ruby{,gems} rubygem-{rake,bundler} npm nc hostname redhat-rpm-config git \
+  dnf -y install postgresql-libs ruby{,gems} rubygem-{rake,bundler} npm nc hostname redhat-rpm-config git \
     gcc-c++ make bzip2 gettext tar libxml2-devel libcurl-devel ruby-devel postgresql-devel; \
   rpm --import https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8; \
+  rpm -i https://rpmfind.net/linux/almalinux/8.10/AppStream/x86_64/os/Packages/postgresql-13.20-1.module_el8.10.0+3967+334cd65a.x86_64.rpm; \
   rpm -i https://dl.fedoraproject.org/pub/epel/8/Everything/x86_64/Packages/q/qpid-proton-c-0.37.0-1.el8.x86_64.rpm; \
   rpm -i https://dl.fedoraproject.org/pub/epel/8/Everything/x86_64/Packages/q/qpid-proton-c-devel-0.37.0-1.el8.x86_64.rpm; \
   dnf clean all
