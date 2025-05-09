@@ -61,10 +61,8 @@ RUN \
 USER 10001
 RUN \
   set -eux; \
-  ${RVM_DIR}/bin/rvm install ruby-${RUBY_VERSION} --with-openssl-dir=${RVM_DIR}/usr; \
   ${RVM_DIR}/bin/rvm user rubies; \
-  ${RVM_DIR}/bin/rvm user gemsets; \
-  ${RVM_DIR}/bin/rvm use ruby-${RUBY_VERSION} --default
+  ${RVM_DIR}/bin/rvm user gemsets;
 
 USER 0
 
@@ -88,3 +86,4 @@ RUN dnf -y clean all --disableplugin=subscription-manager --enablerepo='*'
 USER 10001
 
 ENV HOME=/home/user
+ENV PATH=${HOME}/bin:${PATH}
