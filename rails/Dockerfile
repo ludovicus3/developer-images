@@ -43,15 +43,14 @@ USER 0
 
 # Ruby
 ENV RVM_DIR="/usr/local/rvm"
-ENV RUBY_VERSION=3.0.0
 RUN \
   set -eux; \
   gpg2 --keyserver hkp://keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB; \
   curl -sSL https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer | bash -s stable; \
   dnf install -y https://www.rpmfind.net/linux/centos-stream/9-stream/AppStream/x86_64/os/Packages/bison-3.7.4-5.el9.x86_64.rpm; \
   dnf install -y https://www.rpmfind.net/linux/centos-stream/9-stream/AppStream/x86_64/os/Packages/readline-devel-8.1-4.el9.x86_64.rpm; \
+  ${RVM_DIR}/bin/rvm get head; \
   ${RVM_DIR}/bin/rvm requirements; \
-  ${RVM_DIR}/bin/rvm pkg install openssl; \
   usermod -a -G rvm user; \
   rm -rf ${RVM_DIR}/log/*; \
   dnf clean all --enablerepo='*'; \
