@@ -44,8 +44,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            latest
-            bookworm
+            stream9
             type=schedule,pattern={{date 'YYYYMMDD'}}
       - name: Build and push Docker image
         id: build-and-push
