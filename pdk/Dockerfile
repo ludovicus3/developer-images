@@ -25,7 +25,9 @@ RUN stow . -t /home/user/ -d /home/tooling/ --no-folding
 # Set permissions on /etc/passwd, /etc/group, /etc/pki and /home to allow arbitrary users to write
 RUN \
   chgrp -R 0 /home; \
-  chmod -R g=u /etc/passwd /etc/group /home /etc/pki
+  chmod -R g=u /etc/passwd /etc/group /home /etc/pki; \
+  rm -f /opt/puppetlabs/pdk/ssl/cert.pem; \
+  ln -s /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem /opt/puppetlabs/pdk/ssl/cert.pem
 
 # cleanup dnf cache
 RUN dnf -y clean all --enablerepo='*'
