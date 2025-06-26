@@ -1,23 +1,36 @@
-FROM quay.io/ludovicus/base-developer-image:bookworm-latest
+FROM quay.io/ludovicus/base-developer-image:stream9
+LABEL maintainer="Jason Galens"
 
 LABEL name="devfile/cpp-developer-image"
-LABEL version="bookworm"
-
-#labels for container catalog
-LABEL summary="devfile cpp developer image"
-LABEL description="Image with developers tools. Languages SDK and runtimes included."
-LABEL io.k8s.display-name="devfile-developer-cpp"
-
-USER 10001
+LABEL version="stream9"
 
 USER 0
 
-RUN apt install -y build-essential clang g++ gcc clang-tidy clang-format gdb cmake ccache clangd libsdl2-dev
+# $PROFILE_EXT contains all additions made to the bash environment
+ENV PROFILE_EXT=/etc/profile.d/udi_environment.sh
+RUN \
+  touch ${PROFILE_EXT}; \
+  chown 10001 ${PROFILE_EXT}
 
-# Set permissions on /etc/passwd and /home to allow arbitrary users to write
-RUN chgrp -R 0 /home && chmod -R g=u /etc/passwd /etc/group /home
+RUN \
+  dnf config-manager --set-enabled crb; \
+  dnf install -y cmake make ninja-build gcc-toolset-14{,-libasan-devel,-libatomic-devel,-libitm-devel,-liblsan-devel,-libtsan-devel,-libubsan-devel,-offload-nvptx} clang clangd ccache vulkan-devel SDL2-devel SDL2_gfx-devel SDL2_net-devel SDL2_image-devel SDL2_mixer-devel SDL2_ttf-devel; \
+  dnf clean all -y --enablerepo='*'
 
-# cleanup apt cache
-RUN apt clean
+RUN echo "source /opt/rh/gcc-toolset-14/enable" >> ${PROFILE_EXT}
+
+# Create symbolic links from /home/tooling/ -> /home/user/
+RUN stow . -t /home/user/ -d /home/tooling/ --no-folding
+
+# Set permissions on /etc/passwd, /etc/group, /etc/pki and /home to allow arbitrary users to write
+RUN \
+  chgrp -R 0 /home; \
+  chmod -R g=u /etc/passwd /etc/group /home /etc/pki
+
+# cleanup dnf cache
+RUN dnf -y clean all --enablerepo='*'
 
 USER 10001
+
+ENV HOME=/home/user
+
