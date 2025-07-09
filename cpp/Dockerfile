@@ -14,7 +14,7 @@ RUN \
 
 RUN \
   dnf config-manager --set-enabled crb; \
-  dnf install -y cmake make ninja-build gcc-toolset-14{,-libasan-devel,-libatomic-devel,-libitm-devel,-liblsan-devel,-libtsan-devel,-libubsan-devel,-offload-nvptx} clang clangd clang-tools-extra ccache vulkan-devel SDL2-devel SDL2_gfx-devel SDL2_net-devel SDL2_image-devel SDL2_mixer-devel SDL2_ttf-devel mesa-libGL-devel alsa-lib-devel pulseaudio-libs-devel dbus-devel wayland-devel libX11-devel libXrandr-devel libXrender-devel; \
+  dnf install -y cmake make ninja-build gcc-toolset-14{,-libasan-devel,-libatomic-devel,-libitm-devel,-liblsan-devel,-libtsan-devel,-libubsan-devel,-offload-nvptx} clang clangd clang-tools-extra ccache vulkan-devel SDL2-devel SDL2_gfx-devel SDL2_net-devel SDL2_image-devel SDL2_mixer-devel SDL2_ttf-devel mesa-libGL-devel alsa-lib-devel pulseaudio-libs-devel dbus-devel wayland-devel libX11-devel libXcursor-devel libXrandr-devel libXfixes-devel libXi-devel libXrender-devel libusb-devel; \
   dnf clean all -y --enablerepo='*'
 
 RUN echo "source /opt/rh/gcc-toolset-14/enable" >> ${PROFILE_EXT}
