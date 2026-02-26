@@ -8,11 +8,7 @@ on:
   pull_request:
     branches: 
       - develop
-  workflow_run:
-    workflows:
-      - Build Base Developer Image
-    types:
-      - completed
+  workflow_dispatch:
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: quay.io
