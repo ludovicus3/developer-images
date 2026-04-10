@@ -5,7 +5,7 @@ LABEL maintainer="Jason Galens"
 
 LABEL com.redhat.component="devfile-base-container"
 LABEL name="devfile/base-developer-image"
-LABEL version="ubi9"
+LABEL version="stream9"
 
 #labels for container catalog
 LABEL summary="devfile base developer image"
