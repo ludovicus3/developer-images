@@ -26,18 +26,12 @@ RUN set -eux; \
     tar -C /usr/local -xzf /tmp/go.tar.gz; \
     rm -rf /tmp/go.tar.gz; \
     go version; \
-    GO111MODULE=on go install golang.org/x/tools/gopls@v0.16.2; \
+    GO111MODULE=on go install golang.org/x/tools/gopls@latest; \
     chgrp -R 0 /home/tooling; \
-    chmod -R g=u /home/tooling
-
-# Create symbolic links from /home/tooling/ -> /home/user/
-RUN \
-  set -eux; \
-  chgrp -R 0 /home/tooling; \
-  chmod -R g=u /home/tooling; \
-  stow . -t /home/user/ -d /home/tooling/ --no-folding; \
-  cp /home/tooling/.bashrc /home/user/.bashrc; \
-  cp /home/tooling/.bash_profile /home/user/.bash_profile
+    chmod -R g=u /home/tooling; \
+    stow . -t /home/user/ -d /home/tooling/ --no-folding; \
+    cp /home/tooling/.bashrc /home/user/.bashrc; \
+    cp /home/tooling/.bash_profile /home/user/.bash_profile
 
 # Set permissions on /etc/passwd, /etc/group, /etc/pki and /home to allow arbitrary users to write
 RUN \
