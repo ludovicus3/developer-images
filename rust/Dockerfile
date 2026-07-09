@@ -19,6 +19,8 @@ ENV RUSTUP_HOME /home/tooling
 RUN set -eux; \
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
+ENV PATH ${HOME}/bin:${PATH}
+
 USER 0
 
 RUN set -eux; \
